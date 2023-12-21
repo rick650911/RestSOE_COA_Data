@@ -140,13 +140,13 @@ namespace RestSOE_COA_Data
             //                                          new string[] { "json" },
             //                                          CalCadAddrHandler);
 
-            RestOperation GetOffLineMapOper = new RestOperation("GetOffLineMap",
-                                                      new string[] { "Type", "City", "Town", },
-                                                      new string[] { "json" },
-                                                      GetOffLineMapHandler);
+            //RestOperation GetOffLineMapOper = new RestOperation("GetOffLineMap",
+            //                                          new string[] { "Type", "City", "Town", },
+            //                                          new string[] { "json" },
+            //                                          GetOffLineMapHandler);
 
             RestOperation GetOffLineMapOper_ver = new RestOperation("GetOffLineMap_ver",
-                                                      new string[] { "Type", "City","Town", "Land_Version", },
+                                                      new string[] { "Type", "City","Town", "Land_Version", "scale_level" },
                                                       new string[] { "json" },
                                                       GetOffLineMapHandler_ver);
 
@@ -164,7 +164,7 @@ namespace RestSOE_COA_Data
 
             //rootRes.operations.Add(CalCadAddrOper);
 
-            rootRes.operations.Add(GetOffLineMapOper);
+           // rootRes.operations.Add(GetOffLineMapOper);
 
             rootRes.operations.Add(GetOffLineMapOper_ver);
 
@@ -322,87 +322,87 @@ namespace RestSOE_COA_Data
 
 
 
-        private byte[] GetOffLineMapHandler(NameValueCollection boundVariables,
-                                                  JsonObject operationInput,
-                                                      string outputFormat,
-                                                      string requestProperties,
-                                                  out string responseProperties)
-        {
-            responseProperties = null;
+        //private byte[] GetOffLineMapHandler(NameValueCollection boundVariables,
+        //                                          JsonObject operationInput,
+        //                                              string outputFormat,
+        //                                              string requestProperties,
+        //                                          out string responseProperties)
+        //{
+        //    responseProperties = null;
 
-            string strMsg="";
+        //    string strMsg="";
 
-            string parmType;
-            bool found = operationInput.TryGetString("Type", out parmType);
-            if (!found || string.IsNullOrEmpty(parmType))
-                strMsg = "Type:請輸入地圖類型 ";
+        //    string parmType;
+        //    bool found = operationInput.TryGetString("Type", out parmType);
+        //    if (!found || string.IsNullOrEmpty(parmType))
+        //        strMsg = "Type:請輸入地圖類型 ";
 
-            string parmCity;
-            found = operationInput.TryGetString("City", out parmCity);
-            if (!found || string.IsNullOrEmpty(parmCity))
-                strMsg += "City:請輸入縣市 ";
+        //    string parmCity;
+        //    found = operationInput.TryGetString("City", out parmCity);
+        //    if (!found || string.IsNullOrEmpty(parmCity))
+        //        strMsg += "City:請輸入縣市 ";
 
-            string parmTown;
-            found = operationInput.TryGetString("Town", out parmTown);
-            if (!found || string.IsNullOrEmpty(parmTown))
-                strMsg += "Town:請輸入鄉鎮 ";
+        //    string parmTown;
+        //    found = operationInput.TryGetString("Town", out parmTown);
+        //    if (!found || string.IsNullOrEmpty(parmTown))
+        //        strMsg += "Town:請輸入鄉鎮 ";
 
 
-            JsonObject result = new JsonObject();
-            ResultGetOffLineMap resultClass = new ResultGetOffLineMap();
-            if (!string.IsNullOrEmpty(strMsg))
-            {
-                resultClass.msg = strMsg;
-                result.AddObject("result", resultClass);
-                return Encoding.UTF8.GetBytes(result.ToJson());
-            }
+        //    JsonObject result = new JsonObject();
+        //    ResultGetOffLineMap resultClass = new ResultGetOffLineMap();
+        //    if (!string.IsNullOrEmpty(strMsg))
+        //    {
+        //        resultClass.msg = strMsg;
+        //        result.AddObject("result", resultClass);
+        //        return Encoding.UTF8.GetBytes(result.ToJson());
+        //    }
 
-            LogMethod log = new LogMethod("GetOffLineMap");
-            string strURL = "";
-            try
-            {
+        //    LogMethod log = new LogMethod("GetOffLineMap");
+        //    string strURL = "";
+        //    try
+        //    {
                
-                DownLoadMethod down = new DownLoadMethod();
+        //        DownLoadMethod down = new DownLoadMethod();
                 
-                DownLoadMethod.DownType type;
-                string strInput = parmType.ToLower();
-                if (strInput.Contains("vector"))
-                    type = DownLoadMethod.DownType.Vector;
-                else if (strInput.Contains("raster") && strInput.Contains("平地"))
-                    type = DownLoadMethod.DownType.Raster_平地;
-                else if (strInput.Contains("raster") && strInput.Contains("完整"))
-                    type = DownLoadMethod.DownType.Raster_完整;
-                else
-                {
-                    resultClass.msg = "請輸入 地圖類型 vector or raster-平地 or raster-完整";
-                    result.AddObject("result", resultClass);
-                    return Encoding.UTF8.GetBytes(result.ToJson());
-                }
+        //        DownLoadMethod.DownType type;
+        //        string strInput = parmType.ToLower();
+        //        if (strInput.Contains("vector"))
+        //            type = DownLoadMethod.DownType.Vector;
+        //        else if (strInput.Contains("raster") && strInput.Contains("輕量"))
+        //            type = DownLoadMethod.DownType.Raster_輕量版;
+        //        else if (strInput.Contains("raster") && strInput.Contains("完整"))
+        //            type = DownLoadMethod.DownType.Raster_完整版;
+        //        else
+        //        {
+        //            resultClass.msg = "請輸入 地圖類型 vector or raster-平地 or raster-完整";
+        //            result.AddObject("result", resultClass);
+        //            return Encoding.UTF8.GetBytes(result.ToJson());
+        //        }
 
-                strURL = down.GetDownURL(type, parmCity, parmTown,null,out strMsg);
+        //        strURL = down.GetDownURL(type, parmCity, parmTown,null,out strMsg);
 
-            }
-            catch (Exception ex)
-            {
-                strMsg = "檔案路徑錯誤!";
-                log.Add(ex.Message);
-                log.Add(ex.StackTrace);
-                log.Save();
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        strMsg = "檔案路徑錯誤!";
+        //        log.Add(ex.Message);
+        //        log.Add(ex.StackTrace);
+        //        log.Save();
+        //    }
 
-            if (!string.IsNullOrEmpty(strMsg))
-            {
-                resultClass.msg = strMsg;
-                result.AddObject("result", resultClass);
-                return Encoding.UTF8.GetBytes(result.ToJson());
-            }
+        //    if (!string.IsNullOrEmpty(strMsg))
+        //    {
+        //        resultClass.msg = strMsg;
+        //        result.AddObject("result", resultClass);
+        //        return Encoding.UTF8.GetBytes(result.ToJson());
+        //    }
 
-            resultClass.fileUrl = strURL;
-            resultClass.status = true;
-            resultClass.msg = strMsg;
-            result.AddObject("result", resultClass);
-            return Encoding.UTF8.GetBytes(result.ToJson());
-        }
+        //    resultClass.fileUrl = strURL;
+        //    resultClass.status = true;
+        //    resultClass.msg = strMsg;
+        //    result.AddObject("result", resultClass);
+        //    return Encoding.UTF8.GetBytes(result.ToJson());
+        //}
 
 
         private byte[] GetOffLineMapHandler_ver(NameValueCollection boundVariables,
@@ -435,6 +435,11 @@ namespace RestSOE_COA_Data
             //if (!found || string.IsNullOrEmpty(parmVer))  
             //    strMsg += "Land_Version:請輸入地籍圖版次 ";
 
+            string parm_scale_level;
+            found = operationInput.TryGetString("scale_level", out parm_scale_level);
+
+            if (!found || string.IsNullOrEmpty(parm_scale_level))
+                parm_scale_level= "輕量版";
 
             JsonObject result = new JsonObject();
             ResultGetOffLineMap resultClass = new ResultGetOffLineMap();
@@ -456,18 +461,97 @@ namespace RestSOE_COA_Data
                 string strInput = parmType.ToLower();
                 if (strInput.Contains("vector"))
                     type = DownLoadMethod.DownType.Vector;
-                else if (strInput.Contains("raster") && strInput.Contains("平地"))
-                    type = DownLoadMethod.DownType.Raster_平地;
-                else if (strInput.Contains("raster") && strInput.Contains("完整"))
-                    type = DownLoadMethod.DownType.Raster_完整;
+                else if (strInput.Contains("raster") && parm_scale_level.Contains("輕量"))
+                    type = DownLoadMethod.DownType.Raster_輕量版;
+                else if (strInput.Contains("raster") && parm_scale_level.Contains("完整"))
+                    type = DownLoadMethod.DownType.Raster_完整版;
                 else
                 {
-                    resultClass.msg = "請輸入 地圖類型 vector or raster-平地 or raster-完整";
+                    resultClass.msg = "請輸入 地圖類型 vector or raster, 圖磚比例尺層級 輕量版 or 完整版";
                     result.AddObject("result", resultClass);
                     return Encoding.UTF8.GetBytes(result.ToJson());
                 }
 
                 strURL = down.GetDownURL(type, parmCity, parmTown, parmVer, out strMsg);
+
+                //檔案不存在的話，再用同義字看看
+                if (strMsg.Contains(parmCity+ "_"+ parmTown + "尚未提供下載檔案!"))
+                {
+                    bool blFound = false;
+
+                    string parmCity_in= parmCity;
+                    string parmTown_in= parmTown;
+
+                    //縣市同義字
+                    foreach (KeyValuePair<string, List<string>> item in LandVersionManager.DicSameWord_city )
+                    {
+                        string str_word_sys = item.Key;
+
+                        List<string> list_str_word_same = item.Value;
+
+                        foreach (string str_word_same in list_str_word_same)
+                        {
+                            parmCity = parmCity.Replace(str_word_same, str_word_sys);
+
+                            strURL = down.GetDownURL(type, parmCity, parmTown, parmVer, out strMsg);
+                            
+                            if (!strMsg.Contains(parmCity + "_" + parmTown + "尚未提供下載檔案!")) //找到檔案存在
+                            {
+                                blFound = true;                                
+                            }
+
+                            if (blFound) 
+                            {
+                                break; 
+                            }
+
+                            parmCity = parmCity_in;
+                        }
+
+                        if (blFound)
+                        {
+                            break;
+                        }
+                    }// foreach (KeyValuePair<string, List<string>> item in LandVersionManager.DicSameWord_city )
+
+                    //鄉鎮同義字
+                    if (!blFound)
+                    {
+                        parmCity = parmCity_in;
+
+                        foreach (KeyValuePair<string, List<string>> item in LandVersionManager.DicSameWord_town)
+                        {
+                            string str_word_sys = item.Key;
+
+                            List<string> list_str_word_same = item.Value;
+
+                            foreach (string str_word_same in list_str_word_same)
+                            {
+                                parmTown = parmTown.Replace(str_word_same, str_word_sys);
+
+                                strURL = down.GetDownURL(type, parmCity, parmTown, parmVer, out strMsg);
+
+                                if (!strMsg.Contains(parmCity + "_" + parmTown + "尚未提供下載檔案!")) //找到檔案存在
+                                {
+                                    blFound = true;
+                                }
+
+                                if (blFound)
+                                {
+                                    break;
+                                }
+
+                                parmTown = parmTown_in;
+                            }
+
+                            if (blFound)
+                            {
+                                break;
+                            }
+                        }//foreach (KeyValuePair<string, List<string>> item in LandVersionManager.DicSameWord_town)
+                    }
+
+                }// if (strMsg.Contains(parmCity+ "_"+ parmTown + "尚未提供下載檔案!"))
 
             }
             catch (Exception ex)
